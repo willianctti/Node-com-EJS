@@ -1,0 +1,125 @@
+server.js
+
+npm install ejs
+npm install express
+
+
+
+
+
+criar server.js
+
+chamar o express
+const express = require('express')
+
+const app = express() // instanciando
+
+
+app.set("view engine", "ejs") falando que
+a view engine vai ser usada em ejs
+
+
+
+
+criar a rota
+
+
+
+app.get("/", function (req, res) {
+	res.render("index")
+	}
+
+
+	HOSPEDAR EM SERVIDOR
+app.listen(8080) // Rodar
+console.log('Rodando')
+
+
+
+
+// terminal
+
+node server
+
+index tem que estar dentro de uma
+pasta chamada views **
+
+
+
+
+
+sintaxe para incluir
+arquivos separados
+
+<%- include('head'); %>
+
+
+
+
+views e partials = Organização
+
+
+
+PASSAR OBJETO PARA EJS
+
+
+
+Nesse exmplo vi como passar um objeto
+como meio de "mapeamento" entre home
+e about. Aqui, usei o seguinte termo:
+
+
+ <p>Página: <%= typeof pagina != 'undefined' ? pagina: 'Home' %> 
+
+   ======
+===== Se o tipo da página for indefinido, ou seja, não ter nada declarado,
+contstará como a home principal. Caso seja definida, como no
+exemplo abaixo, será usa a declaração da mesma.
+
+
+ {pagina: 'About'}
+
+
+
+
+
+e se eu quiser fazer uma ligação do backend com o front?
+
+
+
+	// Criei no arquivo JavaScript esse array de objetos
+
+ const itens = [
+        {
+            title: "T",
+            message: "Testando"
+        },
+        {
+            title: "E",
+            message: "Esse"
+        },
+        {
+            title: "S",
+            message: "Super"
+        },
+        {
+            title: "T",
+            message: "Teste"
+        }
+    ]
+
+
+
+Puxei para a rota com o index
+
+res.render("pages/index", {
+        qualidades: itens,
+    })
+
+
+
+	No front puxei o array
+
+  <% qualidades.forEach(function(qualidades){
+                
+            })  %>
