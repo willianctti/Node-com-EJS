@@ -1,0 +1,43 @@
+criar pasta 
+
+npm init -y // cirar package.json
+
+
+
+
+npm i --save express -E
+
+criar pasta src; servidor.js
+
+
+
+primeiramente cirar a porta
+const express = require('express')
+const app = express()
+
+criar middleware
+
+app.get('/produtos', (req, res, next) => {
+    res.send({ nome: "Notebook", preco: 1232.32 }) // converter para JSON automaticamente
+} )
+
+
+executar o app listen
+
+app.listen(porta, () => {
+    console.log('Rodando')
+})
+
+
+ajeitar o package.json {
+
+instalar o nodemon em devDependicies
+npm i --save-s
+
+
+"main": "src/servidor.js",
+  "scripts": {
+    "start": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
