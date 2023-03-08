@@ -1,3 +1,8 @@
+||
+
+
+
+
 criar pasta 
 
 npm init -y // cirar package.json
@@ -11,11 +16,11 @@ criar pasta src; servidor.js
 
 
 
-primeiramente cirar a porta
+primeiramente cirar a porta 	USANDO EXPRESS
 const express = require('express')
 const app = express()
 
-criar middleware
+criar middleware // Tudo em servidor.js
 
 app.get('/produtos', (req, res, next) => {
     res.send({ nome: "Notebook", preco: 1232.32 }) // converter para JSON automaticamente
@@ -41,3 +46,170 @@ npm i --save-s
     "test": "echo \"Error: no test specified\" && exit 1"
   },
 
+
+npm start para testar 
+
+
+Criando banco de dados ////////////////
+
+
+
+
+em src /bancoDeDados.js
+
+
+const sequence = {
+    _id: 1,
+    get id() { return this._id++}
+}
+
+const produtos = {}
+
+function salvarProduto(produto) {
+    if (!produto.id) produto.id = sequence.id
+    produtos[produto.id] = produto
+}
+
+
+
+
+
+EXPLICAÇÃO CÓDIGO ACIMA DO BDD
+
+
+
+ este código cria um objeto chamado "sequence"
+ com uma propriedade "_id" e um método "get" chamado "id"
+ que retorna um número sequencialmente crescente a 
+cada vez que é acessado. Em seguida, há um objeto vazio 
+chamado "produtos" e uma função chamada "salvarProduto" 
+que verifica se o objeto "produto" já possui um ID.
+ Se não, ele usa o método "id" do objeto "sequence" 
+para atribuir um ID único a ele e, em seguida, adiciona 
+o objeto "produto" ao objeto "produtos".
+
+
+
+
+function getProduto(id) {
+    return produtos(id) || {}
+}
+
+function getProdutos() {
+    return Object.values(produtos)
+}
+
+module.exports = {salvarProduto, getProduto, getProdutos}
+
+
+no servidor ///////////////////
+
+
+
+pegar produtos do banco de dados 
+
+
+app.get('/produtos', (req, res, next) => {
+   res.send(bancoDeDados.getProdutos())
+})
+
+
+
+entrar em produyto especifico
+pelo id
+
+app.get('/produtos/:id', (req, res, next) => {
+    res.send(bancoDeDados.getProduto(req.params.id))
+})
+
+
+
+
+ADICIONAR PRODUTOS AO BANCO DE DADOS
+
+app.post('/produtos', (req, res, next) => {
+    const salvarProduto = bancoDeDados.salvarProduto({
+        nome: req.body.name,
+        preco: req.body.preco
+    })
+})
+
+
+
+RESUMO DOS CODIGOS ACIMA
+
+A primeira rota "GET" lida com a solicitação HTTP GET 
+para o caminho "/produtos". Quando essa rota é acessada,
+ ela chama a função "getProdutos" do objeto "bancoDeDados" 
+para buscar todos os produtos armazenados e, em seguida, 
+envia uma resposta HTTP com esses produtos em formato JSON.
+
+A segunda rota "GET" lida com a solicitação HTTP GET para 
+o caminho "/produtos/:id". Quando essa rota é acessada, 
+ela chama a função "getProduto" do objeto "bancoDeDados" 
+para buscar o produto com o ID especificado na URL
+(por meio do parâmetro "id") e, em seguida, envia uma
+resposta HTTP com esse produto em formato JSON.
+
+A terceira rota "POST" lida com a solicitação HTTP POST 
+para o caminho "/produtos". Quando essa rota é acessada, 
+ela chama a função "salvarProduto" do objeto "bancoDeDados"
+para salvar um novo produto com o nome e o preço 
+fornecidos no corpo da solicitação HTTP
+(por meio das propriedades "name" e "preco" de "req.body").
+Em seguida, ele envia uma resposta HTTP com o produto 
+recém-salvo em formato JSON.
+
+
+
+converter para objeto usando o modulo body parser
+
+npm i --save body-parser@1.18.2 -E
+
+app.use(bodyParser.urlencoded({extended: true}))
+
+
+
+
+
+
+ALTERAR DADOS DE UM PRODUTO 
+app.put('/produtos/:id', (req, res, next) => {
+    const produto = bancoDeDados.salvarProduto({
+        id: req.params.id,
+        nome: req.body.name,
+        preco: req.body.preco
+    })
+    res.send(produto)
+})
+
+
+
+EXCLUIR UM PRODUTO 
+
+BANCO DE DADOS///////// CRIAR FUNÇÃO PARA EXCLUIR 
+
+
+function excluirProduto(id) {
+    const produto = produtos[id]
+    delete produtos[id]
+    return produto
+}
+
+chamar ela no module.exports
+
+
+app.delete('/produtos/:id', (req, res, next) => {
+    const produto = bancoDeDados.excluirProduto(req.params.id)
+    res.send(produto)
+})
+
+
+FIZEMOS ASSIM, UM CRUD
+
+get todos
+get por id
+put para alterar dados
+delete excluir
+
+creat read update e delete = CRUD
