@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Tudo sobre promisses!</h1>
+    <script>
+        // Criação de uma promise
+
+        const promessa = new Promise((resolve, reject) => {
+            const nome = "Willian"
+
+            if(nome === 'Willian') {
+                resolve('Usuário WIllian encontrado!')
+            } else {
+                reject('Usuário não encontrado')
+            }
+        })
+
+        promessa.then((data) => {
+            console.log(data)
+}) 
+        // Encadeamento de then's
+
+        const promessaDois = new Promise((resolve, reject) => {
+            const nome = "Willian"
+
+            if(nome === 'Willian') {
+                resolve('Usuário WIllian encontrado!')
+            } else {
+                reject('Usuário não encontrado')
+            }
+        })
+
+        promessaDois
+        .then((data) => {
+            return data.toUpperCase()
+        })
+        .then((stringModificado)  => {
+            console.log(stringModificado)
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

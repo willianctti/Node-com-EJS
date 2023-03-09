@@ -1,0 +1,12 @@
+const promessa = new Promise((resolve, reject) => {
+            const nome = "Willian"
+
+            if(nome === 'Willian') {
+                resolve('Usuário WIllian encontrado!')
+            } else {
+                reject('Usuário não encontrado')
+            }
+        })
+
+        promessa.then((data) => {
+            console.log(data)
